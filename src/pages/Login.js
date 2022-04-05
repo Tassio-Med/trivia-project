@@ -70,7 +70,6 @@ class Login extends React.Component {
           >
             <button
               type="button"
-              //   onClick={ this.handleClick }
               data-testid="btn-play"
               disabled={ isBtnDisabled }
             >
