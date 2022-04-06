@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import { userLogin, playerLogin, fetchTriviaToken } from '../actions';
 import logo from '../trivia.png';
 import '../App.css';
@@ -11,8 +11,9 @@ class Login extends React.Component {
     super();
     this.state = {
       email: '',
-      nome: '',
+      name: '',
       isBtnDisabled: true,
+      redirect: false,
     };
   }
 
@@ -23,9 +24,9 @@ class Login extends React.Component {
   }
 
   validation = () => {
-    const { nome } = this.state;
+    const { name } = this.state;
     const minSix = 1;
-    const nomeMin = nome.length >= minSix;
+    const nomeMin = name.length >= minSix;
     if (this.validateEmail() && nomeMin) {
       this.setState({ isBtnDisabled: false });
     } else {
@@ -33,13 +34,20 @@ class Login extends React.Component {
     }
   }
 
+  handleRedirect = () => {
+    this.setState({
+      redirect: true,
+    });
+  };
+
   handleClick = (event) => {
-    const { email, nome } = this.state;
+    const { email, name } = this.state;
     const { login, player, triviaToken } = this.props;
     event.preventDefault();
     login({ email });
-    player({ nome });
+    player({ name });
     triviaToken();
+    this.handleRedirect();
     // console.log('handleClick');
     // history.push('/carteira');
   }
@@ -53,7 +61,7 @@ class Login extends React.Component {
   }
 
   render() {
-    const { email, nome, isBtnDisabled } = this.state;
+    const { email, name, isBtnDisabled, redirect } = this.state;
     // const { login } = this.props;
     return (
       <div className="Login">
@@ -63,8 +71,8 @@ class Login extends React.Component {
             type="text"
             onChange={ this.handleInput }
             placeholder="nome"
-            value={ nome }
-            name="nome"
+            value={ name }
+            name="name"
             data-testid="input-player-name"
           />
           <input
@@ -77,19 +85,16 @@ class Login extends React.Component {
           />
         </section>
         <div className="link">
-          <Link
-            to="/"
+          <button
+            type="button"
+            data-testid="btn-play"
+            disabled={ isBtnDisabled }
+            onClick={ this.handleClick }
           >
-            <button
-              type="button"
-              data-testid="btn-play"
-              disabled={ isBtnDisabled }
-              onClick={ this.handleClick }
+            Play
+          </button>
+          { redirect && <Redirect to="/Game" /> }
 
-            >
-              Play
-            </button>
-          </Link>
         </div>
         <div className="link">
           <Link

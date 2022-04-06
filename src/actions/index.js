@@ -1,6 +1,8 @@
 export const USER_LOGIN = 'USER_LOGIN';
 export const PLAYER_LOGIN = 'PLAYER_LOGIN';
 export const TOKEN_LOGIN = 'TOKEN_LOGIN';
+export const USER_HASH = 'USER_HASH';
+export const GRAVATAR_PROFILE = 'GRAVATAR_PROFILE';
 
 export const userLogin = (payload) => ({
   type: USER_LOGIN,
@@ -17,11 +19,20 @@ export const tokenLogin = (payload) => ({
   payload,
 });
 
+export const userHash = (payload) => ({
+  type: USER_HASH,
+  payload,
+});
+
+export const gravatarProfile = (payload) => ({
+  type: GRAVATAR_PROFILE,
+  payload,
+});
+
 export function fetchTriviaToken() {
   return async (dispatch) => {
     const response = await fetch('https://opentdb.com/api_token.php?command=request');
     const resultado = await response.json();
     dispatch(tokenLogin(resultado.token));
-    console.log(resultado.token);
   };
 }
