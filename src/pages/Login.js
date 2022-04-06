@@ -1,7 +1,8 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { userLogin } from '../actions';
+import { userLogin, playerLogin, fetchTriviaToken } from '../actions';
 import logo from '../trivia.png';
 import '../App.css';
 
@@ -30,6 +31,17 @@ class Login extends React.Component {
     } else {
       this.setState({ isBtnDisabled: true });
     }
+  }
+
+  handleClick = (event) => {
+    const { email, nome } = this.state;
+    const { login, player, triviaToken } = this.props;
+    event.preventDefault();
+    login({ email });
+    player({ nome });
+    triviaToken();
+    // console.log('handleClick');
+    // history.push('/carteira');
   }
 
   validateEmail() {
@@ -72,8 +84,10 @@ class Login extends React.Component {
               type="button"
               data-testid="btn-play"
               disabled={ isBtnDisabled }
+              onClick={ this.handleClick }
+
             >
-              Jogar
+              Play
             </button>
           </Link>
         </div>
@@ -84,6 +98,14 @@ class Login extends React.Component {
 
 const mapDispatchToProps = (dispatch) => ({
   login: (e) => dispatch(userLogin(e)),
+  player: (e) => dispatch(playerLogin(e)),
+  triviaToken: () => dispatch(fetchTriviaToken()),
 });
+
+Login.propTypes = {
+  login: PropTypes.func.isRequired,
+  player: PropTypes.func.isRequired,
+  triviaToken: PropTypes.func.isRequired,
+};
 
 export default connect(null, mapDispatchToProps)(Login);
