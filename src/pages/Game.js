@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import Header from '../components/Header';
 import Loading from '../components/Loading';
 import { fetchTriviaResetToken } from '../actions';
+import '../App.css';
 
 class Game extends React.Component {
   constructor() {
@@ -32,6 +33,22 @@ class Game extends React.Component {
       return this.fetchTriviaQuestions();
     }
     return resultado.results;
+  }
+
+  handleClickAnswer= (e) => {
+    const { target: { parentElement: { childNodes } } } = e;
+    childNodes.forEach((element) => {
+      if (element.id === 'correct') {
+        element.className = 'green-border';
+      } else {
+        element.className = 'red-border';
+      }
+    });
+
+    this.setState = {
+      right: 'green-border',
+      wrong: 'red-border',
+    };
   }
 
   renderQuestions = () => {
@@ -67,6 +84,12 @@ class Game extends React.Component {
       <button
         key={ index }
         type="button"
+        onClick={ this.handleClickAnswer }
+        id={ (
+          index === answers.length - 1
+            ? 'correct'
+            : 'wrong'
+        ) }
         data-testid={ (
           index === answers.length - 1
             ? 'correct-answer'
