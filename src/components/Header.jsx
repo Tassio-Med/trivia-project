@@ -41,6 +41,7 @@ class Header extends React.Component {
             0
           </p>
         </header>
+        <hr />
       </div>
     );
   }
