@@ -4,8 +4,6 @@ export const TOKEN_LOGIN = 'TOKEN_LOGIN';
 export const USER_HASH = 'USER_HASH';
 export const GRAVATAR_PROFILE = 'GRAVATAR_PROFILE';
 
-const CODE_ERROR = 3;
-
 export const userLogin = (payload) => ({
   type: USER_LOGIN,
   payload,
@@ -43,14 +41,4 @@ export async function fetchTriviaResetToken(token) {
   const response = await fetch(`https://opentdb.com/api_token.php?command=reset&token=${token}`);
   const resultado = await response.json();
   console.log(resultado);
-}
-
-export async function fetchTriviaQuestions(token) {
-  const response = await fetch(`https://opentdb.com/api.php?amount=5&token=${token}`);
-  const resultado = await response.json();
-  if (resultado.response_code === CODE_ERROR) {
-    fetchTriviaResetToken(token);
-    return fetchTriviaQuestions(token);
-  }
-  return resultado;
 }
