@@ -40,13 +40,13 @@ class Login extends React.Component {
     });
   };
 
-  handleClick = (event) => {
+  handleClick = async (event) => {
     const { email, name } = this.state;
     const { login, player, triviaToken } = this.props;
     event.preventDefault();
     login({ email });
     player({ name });
-    triviaToken();
+    await triviaToken();
     this.handleRedirect();
     // console.log('handleClick');
     // history.push('/carteira');

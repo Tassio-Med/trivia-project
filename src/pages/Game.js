@@ -28,8 +28,8 @@ class Game extends React.Component {
     const response = await fetch(`https://opentdb.com/api.php?amount=5&token=${getToken}`);
     const resultado = await response.json();
     if (resultado.response_code === CODE_ERROR) {
-      fetchTriviaResetToken(getToken);
-      return this.fetchTriviaQuestions(getToken);
+      await fetchTriviaResetToken(getToken);
+      return this.fetchTriviaQuestions();
     }
     return resultado.results;
   }
@@ -37,18 +37,9 @@ class Game extends React.Component {
   renderQuestions = () => {
     const randomized = 0.5;
     const { results, indexQuestion } = this.state;
-    // const { triviaQuestions } = this.props;
-    // if (results.length === 0) {
-    //   this.setState({
-    //     results: triviaQuestions(token).results,
-    //   });
-    //   console.log(results);
-    // }
     const answers = [
       ...results[indexQuestion].incorrect_answers,
       results[indexQuestion].correct_answer];
-    console.log(answers);
-    console.log(answers.sort(() => randomized - Math.random()));
     return (
       <div>
         <p
@@ -61,29 +52,15 @@ class Game extends React.Component {
         >
           { results[indexQuestion].question }
         </p>
-        {/* { (results[indexQestion].type === 'boolean'
-          ? this.renderQuestionTrueFalse(results[indexQestion])
-          : this.renderQuestionMulti(results[indexQestion])) } */}
-        <div>
-          { this.renderQuestionButtons(answers) }
-          {/* { .sort(() => randomized - Math.random()) } */}
+        <div
+          data-testid="answer-options"
+        >
+          { this.renderQuestionButtons(answers)
+            .sort(() => randomized - Math.random()) }
         </div>
       </div>
     );
   }
-
-  /*
-  "category":"Entertainment: Video Games",
-  "type":"multiple",
-  "difficulty":"easy",
-  "question":"What is the first weapon you acquire in Half-Life?",
-  "correct_answer":"A crowbar",
-  "incorrect_answers":[
-    "A pistol",
-    "The H.E.V suit",
-    "Your fists"
-  ]
-  */
 
   renderQuestionButtons = (answers) => answers.map(
     (answer, index) => (
@@ -101,39 +78,11 @@ class Game extends React.Component {
     ),
   );
 
-  // renderQuestionMulti = (question) => {
-  //   const answers = [
-  //     ...question.incorrect_answers,
-  //     question.correct_answer];
-  //   const buttons = this.renderQuestionButtons(answers);
-  //   console.log(buttons);
-  //   return (
-  //     <section>
-  //       multi
-  //     </section>
-  //   );
-  // }
-
-  // renderQuestionTrueFalse = (question) => {
-  //   const answers = [
-  //     ...question.incorrect_answers,
-  //     question.correct_answer];
-  //   const buttons = this.renderQuestionButtons(answers);
-  //   console.log(buttons);
-  //   return (
-  //     <section>
-  //       boolean
-  //     </section>
-  //   );
-  // }
-
   render() {
     const { loading } = this.state;
-    console.log('olha eu aq');
     return (
       <div>
         <Header />
-        <p>QLQR COISA</p>
         { loading ? <Loading /> : (
           this.renderQuestions())}
       </div>
@@ -147,13 +96,11 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   getQuestions: (e) => dispatch(e),
-  // triviaQuestions: (e) => fetchTriviaQuestions(e),
   fetchTriviaResetToken: (e) => fetchTriviaResetToken(e),
 });
 
 Game.propTypes = {
   getToken: PropTypes.string.isRequired,
-  // triviaQuestions: PropTypes.func.isRequired,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Game);
