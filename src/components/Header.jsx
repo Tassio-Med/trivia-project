@@ -24,7 +24,6 @@ class Header extends React.Component {
   render() {
     const { imagem } = this.state;
     const { getName } = this.props;
-    console.log(getName);
     return (
       <div>
         <header>
