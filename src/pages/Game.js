@@ -13,8 +13,6 @@ class Game extends React.Component {
       results: [],
       indexQuestion: 0,
       loading: true,
-      right: '',
-      wrong: '',
     };
   }
 
@@ -37,33 +35,20 @@ class Game extends React.Component {
     return resultado.results;
   }
 
- /*  data-testid={
-    answer === answers.correct_answer ? 'correct-answer' : `wrong-answer-${index}`
-  }
-  className={
-    answer === answers.correct_answer ? correct : wrong
-  }
-  onClick={ this.addClassName } */
-
-
   handleClickAnswer= (e) => {
-    const { parentNode } = e.target;
-    const answerList  = e.target.parentNode.childNode[0];
-    answerList.toString().includes('correct') 
-    answerList.forEach((answer) => {
-      if (answer.includes.id === 'correct-answer') {
-      answer.style.border = correct;
+    const { target: { parentElement: { childNodes } } } = e;
+    childNodes.forEach((element) => {
+      if (element.id === 'correct') {
+        element.className = 'green-border';
       } else {
-      answer.style.border = wrong;
-      } 
-    answerList.
+        element.className = 'red-border';
+      }
+    });
 
-    // e.target.parentElement.childNodes[0]
     this.setState = {
       right: 'green-border',
       wrong: 'red-border',
     };
-    console.log(e.target.parentNode.childNode.);
   }
 
   renderQuestions = () => {
@@ -94,31 +79,27 @@ class Game extends React.Component {
     );
   }
 
-  renderQuestionButtons = (answers) => {
-    const { right, wrong } = this.state;
-    return answers.map(
-      (answer, index) => (
-        <button
-          key={ index }
-          type="button"
-          onClick={ this.handleClickAnswer }
-          // className={ (
-          //   index === answers.length - 1
-          //     ? right
-          //     : wrong
-          // ) }
-          className="red-border"
-          data-testid={ (
-            index === answers.length - 1
-              ? 'correct-answer'
-              : `wrong-answer-${index}`
-          ) }
-        >
-          { answer }
-        </button>
-      ),
-    );
-  }
+  renderQuestionButtons = (answers) => answers.map(
+    (answer, index) => (
+      <button
+        key={ index }
+        type="button"
+        onClick={ this.handleClickAnswer }
+        id={ (
+          index === answers.length - 1
+            ? 'correct'
+            : 'wrong'
+        ) }
+        data-testid={ (
+          index === answers.length - 1
+            ? 'correct-answer'
+            : `wrong-answer-${index}`
+        ) }
+      >
+        { answer }
+      </button>
+    ),
+  );
 
   render() {
     const { loading } = this.state;
