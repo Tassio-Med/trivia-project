@@ -1,8 +1,6 @@
 import { TOKEN_LOGIN } from '../actions';
 
-const initialState = {
-  token: '',
-};
+const initialState = '';
 
 function token(state = initialState, action) {
   switch (action.type) {
