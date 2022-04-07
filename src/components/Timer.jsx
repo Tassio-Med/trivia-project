@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 const ONE_SECOND = 1000;
 const TIME_LIMIT = 0;
@@ -8,7 +9,7 @@ class Timer extends React.Component {
     super();
     this.state = {
       seconds: 30,
-      disabled: false,
+      disabled: true,
     };
   }
 
@@ -17,13 +18,15 @@ class Timer extends React.Component {
   }
 
   componentDidUpdate(prevPros, prevState) {
-    if (prevState.seconds === TIME_LIMIT) {
-      console.log('ui');
+    const { disabled } = this.state;
+    if (disabled && prevState.seconds === TIME_LIMIT) {
       const { bttnDisable } = this.props;
       this.setState({
         seconds: 0,
+        disabled: false,
       });
       bttnDisable();
+      clearInterval(this.intervalID);
     }
   }
 
@@ -46,5 +49,9 @@ class Timer extends React.Component {
     );
   }
 }
+
+Timer.propTypes = {
+  bttnDisable: PropTypes.func.isRequired,
+};
 
 export default Timer;

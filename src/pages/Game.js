@@ -84,27 +84,31 @@ class Game extends React.Component {
     );
   }
 
-  renderQuestionButtons = (answers) => answers.map(
-    (answer, index) => (
-      <button
-        key={ index }
-        type="button"
-        onClick={ this.handleClickAnswer }
-        id={ (
-          index === answers.length - 1
-            ? 'correct'
-            : 'wrong'
-        ) }
-        data-testid={ (
-          index === answers.length - 1
-            ? 'correct-answer'
-            : `wrong-answer-${index}`
-        ) }
-      >
-        {answer}
-      </button>
-    ),
-  );
+  renderQuestionButtons = (answers) => {
+    const { isBttnDisabled } = this.state;
+    return answers.map(
+      (answer, index) => (
+        <button
+          key={ index }
+          type="button"
+          onClick={ this.handleClickAnswer }
+          id={ (
+            index === answers.length - 1
+              ? 'correct'
+              : 'wrong'
+          ) }
+          data-testid={ (
+            index === answers.length - 1
+              ? 'correct-answer'
+              : `wrong-answer-${index}`
+          ) }
+          disabled={ isBttnDisabled }
+        >
+          {answer}
+        </button>
+      ),
+    );
+  }
 
   render() {
     const { loading } = this.state;
