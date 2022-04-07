@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import Header from '../components/Header';
 import Loading from '../components/Loading';
+import Timer from '../components/Timer';
 import { fetchTriviaResetToken } from '../actions';
 import '../App.css';
 
@@ -13,6 +14,7 @@ class Game extends React.Component {
       results: [],
       indexQuestion: 0,
       loading: true,
+      isBttnDisabled: false,
     };
   }
 
@@ -35,7 +37,7 @@ class Game extends React.Component {
     return resultado.results;
   }
 
-  handleClickAnswer= (e) => {
+  handleClickAnswer = (e) => {
     const { target: { parentElement: { childNodes } } } = e;
     childNodes.forEach((element) => {
       if (element.id === 'correct') {
@@ -44,11 +46,12 @@ class Game extends React.Component {
         element.className = 'red-border';
       }
     });
+  }
 
-    this.setState = {
-      right: 'green-border',
-      wrong: 'red-border',
-    };
+  shouldBttnDisable = () => {
+    this.setState({
+      isBttnDisabled: true,
+    });
   }
 
   renderQuestions = () => {
@@ -62,51 +65,57 @@ class Game extends React.Component {
         <p
           data-testid="question-category"
         >
-          { results[indexQuestion].category }
+          {results[indexQuestion].category}
         </p>
         <p
           data-testid="question-text"
         >
-          { results[indexQuestion].question }
+          {results[indexQuestion].question}
         </p>
         <div
           data-testid="answer-options"
         >
-          { this.renderQuestionButtons(answers)
-            .sort(() => randomized - Math.random()) }
+          {this.renderQuestionButtons(answers)
+            .sort(() => randomized - Math.random())}
+          {/* https://www.spritely.net/how-to-randomize-the-order-of-an-array-javascript/ */}
         </div>
+        <Timer bttnDisable={ this.shouldBttnDisable } />
       </div>
     );
   }
 
-  renderQuestionButtons = (answers) => answers.map(
-    (answer, index) => (
-      <button
-        key={ index }
-        type="button"
-        onClick={ this.handleClickAnswer }
-        id={ (
-          index === answers.length - 1
-            ? 'correct'
-            : 'wrong'
-        ) }
-        data-testid={ (
-          index === answers.length - 1
-            ? 'correct-answer'
-            : `wrong-answer-${index}`
-        ) }
-      >
-        { answer }
-      </button>
-    ),
-  );
+  renderQuestionButtons = (answers) => {
+    const { isBttnDisabled } = this.state;
+    return answers.map(
+      (answer, index) => (
+        <button
+          key={ index }
+          type="button"
+          onClick={ this.handleClickAnswer }
+          id={ (
+            index === answers.length - 1
+              ? 'correct'
+              : 'wrong'
+          ) }
+          data-testid={ (
+            index === answers.length - 1
+              ? 'correct-answer'
+              : `wrong-answer-${index}`
+          ) }
+          disabled={ isBttnDisabled }
+        >
+          {answer}
+        </button>
+      ),
+    );
+  }
 
   render() {
     const { loading } = this.state;
     return (
       <div>
         <Header />
-        { loading ? <Loading /> : (
+        {loading ? <Loading /> : (
           this.renderQuestions())}
       </div>
     );
