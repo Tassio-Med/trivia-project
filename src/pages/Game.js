@@ -47,6 +47,8 @@ class Game extends React.Component {
     const answers = [
       ...results[indexQuestion].incorrect_answers,
       results[indexQuestion].correct_answer];
+    console.log(answers);
+    console.log(answers.sort(() => randomized - Math.random()));
     return (
       <div>
         <p
@@ -64,7 +66,7 @@ class Game extends React.Component {
           : this.renderQuestionMulti(results[indexQestion])) } */}
         <div>
           { this.renderQuestionButtons(answers) }
-            {/* { .sort(() => randomized - Math.random()) } */}
+          {/* { .sort(() => randomized - Math.random()) } */}
         </div>
       </div>
     );
