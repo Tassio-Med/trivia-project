@@ -7,7 +7,7 @@ const WELL_DONE = 3;
 
 class FeedBack extends React.Component {
   render() {
-    const { getAssertions, getScore } = this.props;
+    const { getAssertions, getScore, history } = this.props;
     return (
       <div>
         <Header />
@@ -18,6 +18,13 @@ class FeedBack extends React.Component {
         }
         <h2 data-testid="feedback-total-score">{ getScore }</h2>
         <h2 data-testid="feedback-total-question">{ getAssertions }</h2>
+        <button
+          type="button"
+          data-testid="btn-play-again"
+          onClick={ () => history.push('/') }
+        >
+          Play Again
+        </button>
       </div>
     );
   }
@@ -31,6 +38,9 @@ const mapStateToProps = (state) => ({
 FeedBack.propTypes = {
   getAssertions: PropTypes.string.isRequired,
   getScore: PropTypes.string.isRequired,
+  history: PropTypes.shape({
+    push: PropTypes.func,
+  }).isRequired,
 };
 
 export default connect(mapStateToProps)(FeedBack);
