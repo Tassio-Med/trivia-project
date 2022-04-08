@@ -49,12 +49,14 @@ class Game extends React.Component {
   handleClickAnswer = (e, id, difficulty) => {
     const { target: { parentElement: { childNodes } } } = e;
     const { timerSec } = this.state;
-    console.log(timerSec);
-    console.log(id === 'correct');
     if (id === 'correct') {
       const { score } = this.props;
       const number = 10;
-      score(number + (timerSec * this.validateDifficulty(difficulty)));
+      console.log(number);
+      console.log(timerSec);
+      console.log(difficulty);
+      console.log(this.validateDifficulty(difficulty));
+      score(number + Number(timerSec) * this.validateDifficulty(difficulty));
     }
     childNodes.forEach((element) => {
       if (element.id === 'correct') {
@@ -90,6 +92,7 @@ class Game extends React.Component {
   renderQuestions = () => {
     const randomized = 0.5;
     const { results, indexQuestion } = this.state;
+    const { difficulty } = results[indexQuestion];
     const answers = [
       ...results[indexQuestion].incorrect_answers,
       results[indexQuestion].correct_answer];
@@ -108,7 +111,7 @@ class Game extends React.Component {
         <div
           data-testid="answer-options"
         >
-          {this.renderQuestionButtons(answers)
+          {this.renderQuestionButtons(answers, difficulty)
             .sort(() => randomized - Math.random())}
           {/* https://www.spritely.net/how-to-randomize-the-order-of-an-array-javascript/ */}
         </div>
@@ -120,14 +123,13 @@ class Game extends React.Component {
     );
   }
 
-  renderQuestionButtons = (answers) => {
+  renderQuestionButtons = (answers, difficulty) => {
     const { isBttnDisabled } = this.state;
     return answers.map(
       (answer, index) => {
         const id = (index === answers.length - 1
           ? 'correct'
           : 'wrong');
-        const { difficulty } = answer;
         return (
           <button
             key={ index }
