@@ -1,4 +1,4 @@
-import { PLAYER_LOGIN } from '../actions';
+import { PLAYER_LOGIN, RESULTS_SCORE } from '../actions';
 
 const initialState = {
   name: '',
@@ -13,6 +13,11 @@ function player(state = initialState, action) {
     return {
       ...state,
       name: action.payload.name,
+    };
+  case RESULTS_SCORE:
+    return {
+      ...state,
+      score: action.payload,
     };
   default:
     return state;
