@@ -30,3 +30,4 @@ FeedBack.propTypes = {
 };
 
 export default connect(mapStateToProps)(FeedBack);
+// falta a logica do botao
