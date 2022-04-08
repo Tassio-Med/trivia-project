@@ -35,10 +35,13 @@ class Timer extends React.Component {
   }
 
   timer = () => {
+    const { handleTimer } = this.props;
     this.intervalID = setInterval(() => {
       this.setState((prevState) => ({
         seconds: prevState.seconds - 1,
       }));
+      const { seconds } = this.state;
+      handleTimer(seconds);
     }, ONE_SECOND);
   }
 
@@ -52,6 +55,7 @@ class Timer extends React.Component {
 
 Timer.propTypes = {
   bttnDisable: PropTypes.func.isRequired,
+  handleTimer: PropTypes.func.isRequired,
 };
 
 export default Timer;
