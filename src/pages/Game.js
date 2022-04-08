@@ -71,6 +71,7 @@ class Game extends React.Component {
 
   btnNextQuestion = () => {
     const { indexQuestion, results } = this.state;
+    const { history } = this.props;
     const limitQuestion = results.length - 1;
     if (indexQuestion < limitQuestion) {
       this.setState((prevState) => ({
@@ -79,6 +80,8 @@ class Game extends React.Component {
         wrong: '',
         correct: '',
       }));
+    } else {
+      history.push('/Feedback');
     }
   }
 
@@ -98,7 +101,7 @@ class Game extends React.Component {
 
   renderQuestions = () => {
     const randomized = 0.5;
-    const { results, indexQuestion } = this.state;
+    const { results, indexQuestion, enabledNext } = this.state;
     const { difficulty } = results[indexQuestion];
     const answers = [
       ...results[indexQuestion].incorrect_answers,
@@ -122,10 +125,13 @@ class Game extends React.Component {
             .sort(() => randomized - Math.random())}
           {/* https://www.spritely.net/how-to-randomize-the-order-of-an-array-javascript/ */}
         </div>
-        <Timer
-          bttnDisable={ this.shouldBttnDisable }
-          handleTimer={ this.handleTimer }
-        />
+        { !enabledNext
+        && (
+          <Timer
+            bttnDisable={ this.shouldBttnDisable }
+            handleTimer={ this.handleTimer }
+          />
+        )}
       </div>
     );
   }
@@ -199,6 +205,9 @@ const mapDispatchToProps = (dispatch) => ({
 Game.propTypes = {
   getToken: PropTypes.string.isRequired,
   score: PropTypes.func.isRequired,
+  history: PropTypes.shape({
+    push: PropTypes.func,
+  }).isRequired,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Game);

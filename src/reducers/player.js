@@ -2,7 +2,7 @@ import { PLAYER_LOGIN, RESULTS_SCORE } from '../actions';
 
 const initialState = {
   name: '',
-  assertions: '',
+  assertions: 0,
   score: 0,
   gravatarEmail: '',
 };
@@ -18,6 +18,7 @@ function player(state = initialState, action) {
     return {
       ...state,
       score: state.score + action.payload,
+      assertions: state.assertions + 1,
     };
   default:
     return state;
