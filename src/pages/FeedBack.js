@@ -34,5 +34,3 @@ FeedBack.propTypes = {
 };
 
 export default connect(mapStateToProps)(FeedBack);
-
-// subir pr
