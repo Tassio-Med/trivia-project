@@ -7,7 +7,7 @@ const WELL_DONE = 3;
 
 class FeedBack extends React.Component {
   render() {
-    const { getAssertions } = this.props;
+    const { getAssertions, getScore } = this.props;
     return (
       <div>
         <Header />
@@ -16,6 +16,8 @@ class FeedBack extends React.Component {
             ? <span data-testid="feedback-text">Well Done!</span>
             : <span data-testid="feedback-text">Could be better...</span>
         }
+        <h2 data-testid="feedback-total-score">{ getScore }</h2>
+        <h2 data-testid="feedback-total-question">{ getAssertions }</h2>
       </div>
     );
   }
@@ -23,11 +25,12 @@ class FeedBack extends React.Component {
 
 const mapStateToProps = (state) => ({
   getAssertions: state.player.assertions,
+  getScore: state.player.score,
 });
 
 FeedBack.propTypes = {
   getAssertions: PropTypes.string.isRequired,
+  getScore: PropTypes.string.isRequired,
 };
 
 export default connect(mapStateToProps)(FeedBack);
-// falta a logica do botao
