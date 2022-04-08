@@ -16,6 +16,9 @@ class Game extends React.Component {
       loading: true,
       isBttnDisabled: false,
       timerSec: 30,
+      enabledNext: false,
+      correct: '',
+      wrong: '',
     };
 
     this.validateDifficulty = this.validateDifficulty.bind(this);
@@ -47,32 +50,36 @@ class Game extends React.Component {
   }
 
   handleClickAnswer = (e, id, difficulty) => {
-    const { target: { parentElement: { childNodes } } } = e;
     const { timerSec } = this.state;
     if (id === 'correct') {
       const { score } = this.props;
       const number = 10;
-      console.log(number);
-      console.log(timerSec);
-      console.log(difficulty);
-      console.log(this.validateDifficulty(difficulty));
       score(number + Number(timerSec) * this.validateDifficulty(difficulty));
     }
-    childNodes.forEach((element) => {
-      if (element.id === 'correct') {
-        element.className = 'green-border';
-      } else {
-        element.className = 'red-border';
-      }
+    this.setState({
+      enabledNext: true,
+      correct: 'green-border',
+      wrong: 'red-border',
     });
   }
-
-  // 10 + (timer * dificuldade)
 
   shouldBttnDisable = () => {
     this.setState({
       isBttnDisabled: true,
     });
+  }
+
+  btnNextQuestion = () => {
+    const { indexQuestion, results } = this.state;
+    const limitQuestion = results.length - 1;
+    if (indexQuestion < limitQuestion) {
+      this.setState((prevState) => ({
+        indexQuestion: prevState.indexQuestion + 1,
+        enabledNext: false,
+        wrong: '',
+        correct: '',
+      }));
+    }
   }
 
   validateDifficulty(param) {
@@ -124,7 +131,7 @@ class Game extends React.Component {
   }
 
   renderQuestionButtons = (answers, difficulty) => {
-    const { isBttnDisabled } = this.state;
+    const { isBttnDisabled, wrong, correct } = this.state;
     return answers.map(
       (answer, index) => {
         const id = (index === answers.length - 1
@@ -145,6 +152,11 @@ class Game extends React.Component {
                 ? 'correct-answer'
                 : `wrong-answer-${index}`
             ) }
+            className={ (
+              index === answers.length - 1
+                ? correct
+                : wrong
+            ) }
             disabled={ isBttnDisabled }
           >
             {answer}
@@ -155,12 +167,21 @@ class Game extends React.Component {
   }
 
   render() {
-    const { loading } = this.state;
+    const { loading, enabledNext } = this.state;
     return (
       <div>
         <Header />
         {loading ? <Loading /> : (
           this.renderQuestions())}
+        { enabledNext && (
+          <button
+            type="button"
+            onClick={ this.btnNextQuestion }
+            data-testid="btn-next"
+          >
+            Next
+          </button>
+        )}
       </div>
     );
   }
