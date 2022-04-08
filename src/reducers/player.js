@@ -3,7 +3,7 @@ import { PLAYER_LOGIN, RESULTS_SCORE } from '../actions';
 const initialState = {
   name: '',
   assertions: '',
-  score: '',
+  score: 0,
   gravatarEmail: '',
 };
 
@@ -17,7 +17,7 @@ function player(state = initialState, action) {
   case RESULTS_SCORE:
     return {
       ...state,
-      score: action.payload,
+      score: state.score + action.payload,
     };
   default:
     return state;

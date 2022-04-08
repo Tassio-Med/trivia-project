@@ -23,7 +23,7 @@ class Header extends React.Component {
 
   render() {
     const { imagem } = this.state;
-    const { getName, getAssertions } = this.props;
+    const { getName, getScore } = this.props;
     return (
       <div>
         <header>
@@ -38,7 +38,7 @@ class Header extends React.Component {
             { getName }
           </p>
           <p data-testid="header-score">
-            { getAssertions }
+            { getScore }
           </p>
         </header>
         <hr />
@@ -50,7 +50,7 @@ class Header extends React.Component {
 const mapStateToProps = (state) => ({
   getEmail: state.user.email,
   getName: state.player.name,
-  getAssertions: state.player.assertions,
+  getScore: state.player.score,
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -61,7 +61,7 @@ Header.propTypes = {
   getEmail: PropTypes.string.isRequired,
   hash: PropTypes.func.isRequired,
   getName: PropTypes.string.isRequired,
-  getAssertions: PropTypes.string.isRequired,
+  getScore: PropTypes.string.isRequired,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Header);

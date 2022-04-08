@@ -16,6 +16,9 @@ class Game extends React.Component {
       loading: true,
       isBttnDisabled: false,
       timerSec: 30,
+      enabledNext: false,
+      correct: '',
+      wrong: '',
     };
 
     this.validateDifficulty = this.validateDifficulty.bind(this);
@@ -47,30 +50,36 @@ class Game extends React.Component {
   }
 
   handleClickAnswer = (e, id, difficulty) => {
-    const { target: { parentElement: { childNodes } } } = e;
     const { timerSec } = this.state;
-    console.log(timerSec);
-    console.log(id === 'correct');
     if (id === 'correct') {
       const { score } = this.props;
       const number = 10;
-      score(number + (timerSec * this.validateDifficulty(difficulty)));
+      score(number + Number(timerSec) * this.validateDifficulty(difficulty));
     }
-    childNodes.forEach((element) => {
-      if (element.id === 'correct') {
-        element.className = 'green-border';
-      } else {
-        element.className = 'red-border';
-      }
+    this.setState({
+      enabledNext: true,
+      correct: 'green-border',
+      wrong: 'red-border',
     });
   }
-
-  // 10 + (timer * dificuldade)
 
   shouldBttnDisable = () => {
     this.setState({
       isBttnDisabled: true,
     });
+  }
+
+  btnNextQuestion = () => {
+    const { indexQuestion, results } = this.state;
+    const limitQuestion = results.length - 1;
+    if (indexQuestion < limitQuestion) {
+      this.setState((prevState) => ({
+        indexQuestion: prevState.indexQuestion + 1,
+        enabledNext: false,
+        wrong: '',
+        correct: '',
+      }));
+    }
   }
 
   validateDifficulty(param) {
@@ -90,6 +99,7 @@ class Game extends React.Component {
   renderQuestions = () => {
     const randomized = 0.5;
     const { results, indexQuestion } = this.state;
+    const { difficulty } = results[indexQuestion];
     const answers = [
       ...results[indexQuestion].incorrect_answers,
       results[indexQuestion].correct_answer];
@@ -108,7 +118,7 @@ class Game extends React.Component {
         <div
           data-testid="answer-options"
         >
-          {this.renderQuestionButtons(answers)
+          {this.renderQuestionButtons(answers, difficulty)
             .sort(() => randomized - Math.random())}
           {/* https://www.spritely.net/how-to-randomize-the-order-of-an-array-javascript/ */}
         </div>
@@ -120,14 +130,13 @@ class Game extends React.Component {
     );
   }
 
-  renderQuestionButtons = (answers) => {
-    const { isBttnDisabled } = this.state;
+  renderQuestionButtons = (answers, difficulty) => {
+    const { isBttnDisabled, wrong, correct } = this.state;
     return answers.map(
       (answer, index) => {
         const id = (index === answers.length - 1
           ? 'correct'
           : 'wrong');
-        const { difficulty } = answer;
         return (
           <button
             key={ index }
@@ -143,6 +152,11 @@ class Game extends React.Component {
                 ? 'correct-answer'
                 : `wrong-answer-${index}`
             ) }
+            className={ (
+              index === answers.length - 1
+                ? correct
+                : wrong
+            ) }
             disabled={ isBttnDisabled }
           >
             {answer}
@@ -153,12 +167,21 @@ class Game extends React.Component {
   }
 
   render() {
-    const { loading } = this.state;
+    const { loading, enabledNext } = this.state;
     return (
       <div>
         <Header />
         {loading ? <Loading /> : (
           this.renderQuestions())}
+        { enabledNext && (
+          <button
+            type="button"
+            onClick={ this.btnNextQuestion }
+            data-testid="btn-next"
+          >
+            Next
+          </button>
+        )}
       </div>
     );
   }
