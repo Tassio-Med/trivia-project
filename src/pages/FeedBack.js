@@ -20,6 +20,13 @@ class FeedBack extends React.Component {
         <h2 data-testid="feedback-total-question">{ getAssertions }</h2>
         <button
           type="button"
+          data-testid="btn-ranking"
+          onClick={ () => history.push('/Ranking') }
+        >
+          Ranking
+        </button>
+        <button
+          type="button"
           data-testid="btn-play-again"
           onClick={ () => history.push('/') }
         >
@@ -36,8 +43,8 @@ const mapStateToProps = (state) => ({
 });
 
 FeedBack.propTypes = {
-  getAssertions: PropTypes.string.isRequired,
-  getScore: PropTypes.string.isRequired,
+  getAssertions: PropTypes.number.isRequired,
+  getScore: PropTypes.number.isRequired,
   history: PropTypes.shape({
     push: PropTypes.func,
   }).isRequired,

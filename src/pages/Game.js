@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import md5 from 'crypto-js/md5';
 import Header from '../components/Header';
 import Loading from '../components/Loading';
 import Timer from '../components/Timer';
@@ -69,6 +70,34 @@ class Game extends React.Component {
     });
   }
 
+  urlGravatar = (getEmail) => {
+    const hashEmail = md5(getEmail).toString();
+    return `https://www.gravatar.com/avatar/${hashEmail}`;
+  }
+
+  handleLocalStorage = () => {
+    const STORAGE_KEY = 'STORAGE_TRIVIA_RANKING';
+    const { getName, getEmail, getScore } = this.props;
+    let ranking = [];
+    if (localStorage.getItem(STORAGE_KEY)) {
+      ranking = JSON.parse(localStorage.getItem(STORAGE_KEY));
+      const person = {
+        name: getName,
+        score: getScore,
+        picture: this.urlGravatar(getEmail),
+      };
+      ranking = [...ranking, person];
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(ranking));
+    } else {
+      const person = {
+        name: getName,
+        score: getScore,
+        picture: this.urlGravatar(getEmail),
+      };
+      localStorage.setItem(STORAGE_KEY, JSON.stringify([person]));
+    }
+  }
+
   btnNextQuestion = () => {
     const { indexQuestion, results } = this.state;
     const { history } = this.props;
@@ -81,6 +110,7 @@ class Game extends React.Component {
         correct: '',
       }));
     } else {
+      this.handleLocalStorage();
       history.push('/Feedback');
     }
   }
@@ -195,6 +225,9 @@ class Game extends React.Component {
 
 const mapStateToProps = (state) => ({
   getToken: state.token,
+  getEmail: state.user.email,
+  getScore: state.player.score,
+  getName: state.player.name,
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -204,6 +237,9 @@ const mapDispatchToProps = (dispatch) => ({
 
 Game.propTypes = {
   getToken: PropTypes.string.isRequired,
+  getEmail: PropTypes.string.isRequired,
+  getName: PropTypes.string.isRequired,
+  getScore: PropTypes.number.isRequired,
   score: PropTypes.func.isRequired,
   history: PropTypes.shape({
     push: PropTypes.func,
