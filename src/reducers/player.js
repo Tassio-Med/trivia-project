@@ -1,4 +1,4 @@
-import { PLAYER_LOGIN, RESULTS_SCORE } from '../actions';
+import { PLAYER_LOGIN, RESULTS_SCORE, RESET_PLAYER } from '../actions';
 
 const initialState = {
   name: '',
@@ -20,6 +20,8 @@ function player(state = initialState, action) {
       score: state.score + action.payload,
       assertions: state.assertions + 1,
     };
+  case RESET_PLAYER:
+    return initialState;
   default:
     return state;
   }

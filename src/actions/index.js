@@ -4,6 +4,7 @@ export const TOKEN_LOGIN = 'TOKEN_LOGIN';
 export const USER_HASH = 'USER_HASH';
 export const GRAVATAR_PROFILE = 'GRAVATAR_PROFILE';
 export const RESULTS_SCORE = 'RESULTS_SCORE';
+export const RESET_PLAYER = 'RESET_PLAYER';
 
 export const userLogin = (payload) => ({
   type: USER_LOGIN,
@@ -47,4 +48,8 @@ export async function fetchTriviaResetToken(token) {
 export const resultsScore = (payload) => ({
   type: RESULTS_SCORE,
   payload,
+});
+
+export const resetPlayer = () => ({
+  type: RESET_PLAYER,
 });
