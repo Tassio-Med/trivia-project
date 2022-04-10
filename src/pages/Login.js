@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Link, Redirect } from 'react-router-dom';
-import { userLogin, playerLogin, fetchTriviaToken } from '../actions';
+import { userLogin, playerLogin, fetchTriviaToken, resetPlayer } from '../actions';
 import logo from '../trivia.png';
 import '../App.css';
 
@@ -42,8 +42,9 @@ class Login extends React.Component {
 
   handleClick = async (event) => {
     const { email, name } = this.state;
-    const { login, player, triviaToken } = this.props;
+    const { login, player, triviaToken, reset } = this.props;
     event.preventDefault();
+    reset();
     login({ email });
     player({ name });
     await triviaToken();
@@ -94,7 +95,6 @@ class Login extends React.Component {
             Play
           </button>
           { redirect && <Redirect to="/Game" /> }
-
         </div>
         <div className="link">
           <Link
@@ -117,11 +117,13 @@ const mapDispatchToProps = (dispatch) => ({
   login: (e) => dispatch(userLogin(e)),
   player: (e) => dispatch(playerLogin(e)),
   triviaToken: () => dispatch(fetchTriviaToken()),
+  reset: () => dispatch(resetPlayer()),
 });
 
 Login.propTypes = {
   login: PropTypes.func.isRequired,
   player: PropTypes.func.isRequired,
+  reset: PropTypes.func.isRequired,
   triviaToken: PropTypes.func.isRequired,
 };
 

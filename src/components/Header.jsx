@@ -61,7 +61,7 @@ Header.propTypes = {
   getEmail: PropTypes.string.isRequired,
   hash: PropTypes.func.isRequired,
   getName: PropTypes.string.isRequired,
-  getScore: PropTypes.string.isRequired,
+  getScore: PropTypes.number.isRequired,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Header);
