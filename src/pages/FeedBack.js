@@ -13,25 +13,29 @@ class FeedBack extends React.Component {
         <Header />
         {
           Number(getAssertions) >= WELL_DONE
-            ? <span data-testid="feedback-text">Well Done!</span>
-            : <span data-testid="feedback-text">Could be better...</span>
+            ? <span className="res" data-testid="feedback-text">Well Done!</span>
+            : <span className="res" data-testid="feedback-text">Could be better...</span>
         }
-        <h2 data-testid="feedback-total-score">{ getScore }</h2>
-        <h2 data-testid="feedback-total-question">{ getAssertions }</h2>
-        <button
-          type="button"
-          data-testid="btn-ranking"
-          onClick={ () => history.push('/Ranking') }
-        >
-          Ranking
-        </button>
-        <button
-          type="button"
-          data-testid="btn-play-again"
-          onClick={ () => history.push('/') }
-        >
-          Play Again
-        </button>
+        <h2 className="res" data-testid="feedback-total-score">{ getScore }</h2>
+        <h2 className="res" data-testid="feedback-total-question">{ getAssertions }</h2>
+        <div className="container-btn-feed">
+          <button
+            className="btn-result"
+            type="button"
+            data-testid="btn-ranking"
+            onClick={ () => history.push('/Ranking') }
+          >
+            Ranking
+          </button>
+          <button
+            className="btn-result"
+            type="button"
+            data-testid="btn-play-again"
+            onClick={ () => history.push('/') }
+          >
+            Play Again
+          </button>
+        </div>
       </div>
     );
   }

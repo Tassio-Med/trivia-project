@@ -66,7 +66,9 @@ class Login extends React.Component {
     // const { login } = this.props;
     return (
       <div className="Login">
-        <img src={ logo } className="App-logo" alt="logo" />
+        <div className="container-img">
+          <img src={ logo } className="App-logo" alt="logo" />
+        </div>
         <section className="login-inputs">
           <input
             type="text"
@@ -84,30 +86,32 @@ class Login extends React.Component {
             value={ email }
             name="email"
           />
-        </section>
-        <div className="link">
-          <button
-            type="button"
-            data-testid="btn-play"
-            disabled={ isBtnDisabled }
-            onClick={ this.handleClick }
-          >
-            Play
-          </button>
-          { redirect && <Redirect to="/Game" /> }
-        </div>
-        <div className="link">
-          <Link
-            to="/Settings"
-          >
+          <div className="link">
             <button
               type="button"
-              data-testid="btn-settings"
+              data-testid="btn-play"
+              disabled={ isBtnDisabled }
+              onClick={ this.handleClick }
+              className="play"
             >
-              Configuração
+              Play
             </button>
-          </Link>
-        </div>
+            { redirect && <Redirect to="/Game" /> }
+          </div>
+          <div className="link">
+            <Link
+              to="/Settings"
+            >
+              <button
+                type="button"
+                data-testid="btn-settings"
+                className="play"
+              >
+                Configuração
+              </button>
+            </Link>
+          </div>
+        </section>
       </div>
     );
   }

@@ -27,19 +27,25 @@ class Header extends React.Component {
     return (
       <div>
         <header>
-          <img
-            data-testid="header-profile-picture"
-            src={ imagem }
-            alt="profile"
-          />
-          <p
-            data-testid="header-player-name"
-          >
-            { getName }
-          </p>
-          <p data-testid="header-score">
-            { getScore }
-          </p>
+          <div className="image-name">
+            <img
+              data-testid="header-profile-picture"
+              src={ imagem }
+              alt="profile"
+              className="photo-player"
+            />
+            <p
+              data-testid="header-player-name"
+            >
+              { getName }
+            </p>
+          </div>
+          <div className="score">
+            <p data-testid="header-score">
+              Score:
+              { getScore }
+            </p>
+          </div>
         </header>
         <hr />
       </div>

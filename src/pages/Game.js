@@ -21,7 +21,6 @@ class Game extends React.Component {
       correct: '',
       wrong: '',
     };
-
     this.validateDifficulty = this.validateDifficulty.bind(this);
   }
 
@@ -65,9 +64,7 @@ class Game extends React.Component {
   }
 
   shouldBttnDisable = () => {
-    this.setState({
-      isBttnDisabled: true,
-    });
+    this.setState({ isBttnDisabled: true });
   }
 
   urlGravatar = (getEmail) => {
@@ -137,31 +134,30 @@ class Game extends React.Component {
       ...results[indexQuestion].incorrect_answers,
       results[indexQuestion].correct_answer];
     return (
-      <div>
-        <p
-          data-testid="question-category"
-        >
-          {results[indexQuestion].category}
-        </p>
-        <p
-          data-testid="question-text"
-        >
-          {results[indexQuestion].question}
-        </p>
-        <div
-          data-testid="answer-options"
-        >
-          {this.renderQuestionButtons(answers, difficulty)
-            .sort(() => randomized - Math.random())}
-          {/* https://www.spritely.net/how-to-randomize-the-order-of-an-array-javascript/ */}
+      <div className="container-body-game">
+        <div className="container-dois">
+          <p data-testid="question-category" className="category">
+            {results[indexQuestion].category}
+          </p>
+          <p data-testid="question-text" className="pergunta">
+            {results[indexQuestion].question}
+          </p>
+          <div
+            data-testid="answer-options"
+            className="container-answer"
+          >
+            {this.renderQuestionButtons(answers, difficulty)
+              .sort(() => randomized - Math.random())}
+            {/* https://www.spritely.net/how-to-randomize-the-order-of-an-array-javascript/ */}
+          </div>
+          { !enabledNext
+          && (
+            <Timer
+              bttnDisable={ this.shouldBttnDisable }
+              handleTimer={ this.handleTimer }
+            />
+          )}
         </div>
-        { !enabledNext
-        && (
-          <Timer
-            bttnDisable={ this.shouldBttnDisable }
-            handleTimer={ this.handleTimer }
-          />
-        )}
       </div>
     );
   }
@@ -175,6 +171,7 @@ class Game extends React.Component {
           : 'wrong');
         return (
           <button
+            // className="answer-btn"
             key={ index }
             type="button"
             onClick={ (e) => this.handleClickAnswer(e, id, difficulty) }
@@ -214,6 +211,7 @@ class Game extends React.Component {
             type="button"
             onClick={ this.btnNextQuestion }
             data-testid="btn-next"
+            className="next"
           >
             Next
           </button>
