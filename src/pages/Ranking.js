@@ -48,12 +48,13 @@ class Ranking extends React.Component {
         >
           Ranking
         </h2>
-        <section>
+        <section className="section-ranking">
           { ranking }
         </section>
         <button
           type="button"
           data-testid="btn-go-home"
+          className="btn-result"
           onClick={ () => history.push('/') }
         >
           Play Again
